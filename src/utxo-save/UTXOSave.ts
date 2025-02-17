@@ -84,6 +84,7 @@ export class UTXOSave extends OP_NET {
       }
     }
 
+    Blockchain.log('Nothing found');
     return false;
   }
 

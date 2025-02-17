@@ -2,7 +2,7 @@ import { Assert, Blockchain, opnet, OPNetUnit } from '@btc-vision/unit-test-fram
 import { Address } from '@btc-vision/transaction';
 import { UTXOSave } from '../contracts/UTXOSave';
 import { rnd } from '../contracts/utils';
-import { generateEmptyTransaction } from '../utils';
+import { bigintTxidToUint8Array, generateEmptyTransaction } from '../utils';
 
 const deployer: Address = Blockchain.generateRandomAddress();
 
@@ -74,9 +74,13 @@ await opnet('UTXO Save', async (vm: OPNetUnit) => {
     // Call contract with tx
     Assert.expect(await utxoSave.save()).toEqual(true);
 
+    const savedData = await utxoSave.read();
+    console.log(`saved txid (numeric): ${savedData.txid}`);
+    console.log(`saved txid: ${bigintTxidToUint8Array(savedData.txid)}`);
+
     // Create new tx spending the previous tx
     const spendingTx = generateEmptyTransaction();
-    spendingTx.addInput(tx.id, 1, new Uint8Array());
+    spendingTx.addInput(bigintTxidToUint8Array(savedData.txid), 1, new Uint8Array());
     spendingTx.addOutput(value, deployer.p2pk());
 
     Blockchain.transaction = spendingTx;
