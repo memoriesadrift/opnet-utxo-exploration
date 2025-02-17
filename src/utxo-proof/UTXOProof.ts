@@ -11,7 +11,7 @@ import {
 } from '@btc-vision/btc-runtime/runtime';
 
 export class UTXOProof extends OP_NET {
-  private readonly PROOF_AMOUNT_SATS: u64 = 10_000;
+  private readonly PROOF_AMOUNT_SATS: u64 = 100_00;
   constructor() {
     super();
   }
@@ -22,11 +22,10 @@ export class UTXOProof extends OP_NET {
 
     for (let i = 0; i < outputs.length; i++) {
       const output = outputs[i];
-      Blockchain.log('a');
-      Blockchain.log(`${output.to}`);
+      Blockchain.log(`Checking output: ${output.to}`);
       if (output.to.startsWith('0x')) {
         const outputAddress = Address.fromString(output.to);
-        Blockchain.log('b');
+        Blockchain.log('P2PK Output found!');
         Blockchain.log(`Address: ${address}, Output address: ${outputAddress}`);
         if (outputAddress == address) {
           Blockchain.log(`Output to address found. Index: ${output.index} Value: ${output.value}`);

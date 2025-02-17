@@ -1,13 +1,7 @@
 import { Network, networks } from '@btc-vision/bitcoin';
-import { Address, EcKeyPair } from '@btc-vision/transaction';
 
 // Network
 export const NETWORK: Network = networks.regtest;
-
-export const rnd = (): Address => {
-  const rndKeyPair = EcKeyPair.generateRandomKeyPair(NETWORK);
-  return new Address(rndKeyPair.publicKey);
-};
 
 // Max call stack depth
 export const MAX_CALL_STACK_DEPTH: number = 20;

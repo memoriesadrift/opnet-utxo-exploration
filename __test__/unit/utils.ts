@@ -1,5 +1,4 @@
 import {
-  Blockchain,
   generateTransactionId,
   Transaction,
   TransactionInput,

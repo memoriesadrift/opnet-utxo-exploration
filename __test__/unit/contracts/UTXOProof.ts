@@ -32,7 +32,7 @@ export class UTXOProof extends ContractRuntime {
     return response;
   }
 
-  public async test(sender?: Address, origin?: Address): Promise<void> {
+  public async test(sender?: Address, origin?: Address): Promise<boolean> {
     // BinaryWriter doesn't need to be initialised with a size
     const calldata = new BinaryWriter();
     calldata.writeSelector(this.testSelector);
@@ -40,10 +40,7 @@ export class UTXOProof extends ContractRuntime {
     const response = await this.getResponse(calldata.getBuffer(), sender, origin);
 
     const reader = new BinaryReader(response);
-    const success = reader.readBoolean();
-    if (!success) {
-      throw new Error('UTXO test function failed.');
-    }
+    return reader.readBoolean();
   }
 
   /**
